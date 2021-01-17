@@ -44,8 +44,7 @@ var createTaskEl = function(taskDataObj) {
   listItemEl.className = "task-item";
   listItemEl.setAttribute("data-task-id", taskIdCounter);
   listItemEl.setAttribute("draggable", "true");
-  console.log(taskDataObj);
-console.log(taskDataObj.status);
+
 
   var taskInfoEl = document.createElement("div");
   taskInfoEl.className = "task-info";
@@ -61,6 +60,9 @@ console.log(taskDataObj.status);
 
   taskDataObj.id = taskIdCounter;
   tasks.push(taskDataObj);
+
+  //save data to local storage
+  saveTasks();
 
   // increase task counter for next unique id
   taskIdCounter++;
@@ -121,6 +123,9 @@ var completeEditTask = function(taskName, taskType, taskId) {
     }
   }
 
+  //save data to local storage
+  saveTasks();
+
   alert("Task Updated!");
 
   // remove data attribute from form
@@ -168,7 +173,10 @@ var taskStatusChangeHandler = function(event) {
       tasks[i].status = statusValue;
     }
   }
-  console.log(tasks);
+
+
+  //save data to local storage
+  saveTasks();
 };
 
 var editTask = function(taskId) {
@@ -213,6 +221,9 @@ var deleteTask = function(taskId) {
 
 // reassign tasks array to be the same as updatedTaskArr
 tasks = updatedTaskArr;
+
+//save data to local storage
+saveTasks();
 };
 
 var dropTaskHandler = function(event) {
@@ -249,7 +260,10 @@ for (var i = 0; i < tasks.length; i++) {
   }
 }
 
-console.log(tasks);
+//save data to local storage
+saveTasks();
+
+
 };
 
 // defines the drop zone area
@@ -284,6 +298,11 @@ pageContentEl.addEventListener("click", taskButtonHandler);
 
 // for changing the status
 pageContentEl.addEventListener("change", taskStatusChangeHandler);
+
+//save the data
+var saveTasks = function() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 // for dragging
 pageContentEl.addEventListener("dragstart", dragTaskHandler);
